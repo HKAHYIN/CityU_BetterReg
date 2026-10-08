@@ -29,3 +29,4 @@ test-results/
 ge_courses.json
 *.html
 *.htm
+!index.html
