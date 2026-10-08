@@ -7,7 +7,9 @@ The application is built with Vue, Vite, and TypeScript. It does not provide cou
 This is experiment AI slop, u can use it for better visualization or maybe u can just scrap the data & send to generative ai to help u for reg科.
 I’m still figuring out how to organise the messy data excluding the GE courses, into a clean and easy-to-understand format.
 
-Start to use by clicking the link hkahyin.github.io/CityuBetterReg/
+Try it here:
+[Open CityU BetterReg](https://hkahyin.github.io/CityuBetterReg/)
+
 ## Features
 
 - Import an AIMS Student Detail Schedule by pasting copied `<body>` HTML.
@@ -106,3 +108,7 @@ Manual busy periods are stored in browser `localStorage` under the key `betterre
 The parsers depend on the AIMS HTML and GE JSON structures represented by the supplied references. If AIMS changes those structures, the parser or scraper may need to be updated.
 
 The tool is for timetable planning and reference only. Users must confirm final course requirements, section-group compatibility, availability, and registration details in AIMS before registering.
+
+## License
+
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
