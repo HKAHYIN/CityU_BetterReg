@@ -8,7 +8,7 @@ This is experiment AI slop, u can use it for better visualization or maybe u can
 I’m still figuring out how to organise the messy data excluding the GE courses, into a clean and easy-to-understand format.
 
 Try it here:
-[Open CityU BetterReg](https://hkahyin.github.io/CityuBetterReg/)
+[Open CityU BetterReg](https://hkahyin.github.io/CityU_BetterReg/)
 
 ## Features
 
