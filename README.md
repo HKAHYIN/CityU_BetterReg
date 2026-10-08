@@ -71,8 +71,8 @@ The application does not log in to AIMS and does not scrape AIMS from the fronte
 4. Enable Show GE only.
 5. Open Developer Tools with F12.
 6. Open the Console tab.
-7. Copy the contents of [`public/gescraper.txt`](./public/gescraper.txt) into the console.
-8. Press Enter and wait for `ge_courses.json` to download.
+7. In BetterReg, open the GE data import dialog, choose a delay, and click **Copy customized scraper code**.
+8. Paste the copied code into the console and press Enter, then wait for `ge_courses.json` to download.
 9. Upload the downloaded JSON file in BetterReg.
 
 The scraper runs manually in the user's AIMS browser session. BetterReg only reads the JSON file selected by the user.

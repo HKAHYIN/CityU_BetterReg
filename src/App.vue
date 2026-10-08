@@ -2,6 +2,7 @@
 import { computed, ref } from "vue";
 import { componentLabel, formatTime, getComponentType, getSectionGroup, overlaps, sectionBlocks, sectionGroupMatches, sectionMatchesRange, sectionWithinRange } from "./logic";
 import { parseDetailScheduleHtml, parseGEJson } from "./parsers";
+import { SCRAPER_TEMPLATE } from "./scraperTemplate";
 import type { ComponentFocus, GECatalog, GESection, MeetingBlock, ParseWarning, SearchRange } from "./types";
 
 const scheduleText = ref("");
@@ -139,12 +140,9 @@ async function copyScraper() {
     if (!Number.isInteger(scraperSleepMs.value) || scraperSleepMs.value < 0 || scraperSleepMs.value > 60000) {
       throw new Error("Sleep delay must be a whole number from 0 to 60000 milliseconds.");
     }
-    const response = await fetch("/gescraper.txt");
-    if (!response.ok) throw new Error("The scraper file could not be loaded.");
-    const source = await response.text();
-    const customized = source.replace(
-      /const SLEEP_MS = \d+;/,
-      `const SLEEP_MS = ${scraperSleepMs.value};`,
+    const customized = SCRAPER_TEMPLATE.replace(
+      "__SLEEP_MS__",
+      String(scraperSleepMs.value),
     );
     await navigator.clipboard.writeText(customized);
     scraperCopied.value = true;

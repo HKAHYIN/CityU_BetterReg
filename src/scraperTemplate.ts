@@ -1,6 +1,8 @@
-(async () => {
+// Template for the AIMS GE scraper the user pastes into the browser console.
+// The SLEEP_MS placeholder is replaced with the user-chosen delay before copying.
+export const SCRAPER_TEMPLATE = `(async () => {
   const DAY = { M:1, T:2, W:3, R:4, F:5, S:6, U:7 };
-  const SLEEP_MS = 100;
+  const SLEEP_MS = __SLEEP_MS__;
   const sleep = ms => new Promise(r => setTimeout(r, ms));
   let area = "";
   const courses = [];
@@ -26,9 +28,9 @@
     if (!table) return null;
     const out = [];
     for (const tr of table.querySelectorAll("tr")) {
-      const td = [...tr.children].map(c => c.textContent.replace(/\u00a0/g, " ").trim());
+      const td = [...tr.children].map(c => c.textContent.replace(/\\u00a0/g, " ").trim());
       if (td.length !== 16 || td[0] === "CRN") continue;
-      const m = td[11].match(/(\d\d):(\d\d)\s*-\s*(\d\d):(\d\d)/);
+      const m = td[11].match(/(\\d\\d):(\\d\\d)\\s*-\\s*(\\d\\d):(\\d\\d)/);
       const slot = m && DAY[td[10]] ? { day: DAY[td[10]], start: +m[1]*60 + +m[2], end: +m[3]*60 + +m[4], bldg: td[12], room: td[13], dates: td[9] } : null;
       if (td[0]) out.push({ crn: td[0], section: td[1], credit: +td[2], web: td[4], avail: +td[6].replace(":", ""), cap: +td[7], waitlist: td[8], instructor: td[14], lang: td[15], slots: slot ? [slot] : [] });
       else if (slot && out.length) out[out.length - 1].slots.push(slot);
@@ -48,4 +50,4 @@
   const blob = new Blob([JSON.stringify({ scrapedAt: new Date().toISOString(), term: "202702", courses: result })], { type: "application/json" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob); a.download = "ge_courses.json"; a.click();
-})();
+})();`;
