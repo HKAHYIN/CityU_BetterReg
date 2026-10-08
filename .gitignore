@@ -27,6 +27,7 @@ test-results/
 
 # Local user data and imported exports
 ge_courses.json
+gescraper.txt
 *.html
 *.htm
 !index.html
