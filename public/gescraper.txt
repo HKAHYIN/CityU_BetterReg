@@ -1,0 +1,51 @@
+(async () => {
+  const DAY = { M:1, T:2, W:3, R:4, F:5, S:6, U:7 };
+  const SLEEP_MS = 100;
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  let area = "";
+  const courses = [];
+  for (const tr of document.querySelectorAll("tr")) {
+    const h = tr.querySelector("td.header");
+    if (h) { const t = h.innerText.trim(); if (t !== "Gateway Education") area = t; continue; }
+    const td = tr.querySelectorAll(":scope > td");
+    const a = td[2]?.querySelector("a");
+    if (td.length === 11 && a) courses.push({
+      area, unit: td[0].innerText.trim(),
+      code: td[1].innerText.trim() + td[2].innerText.trim(),
+      title: td[3].innerText.trim(), credit: +td[4].innerText,
+      web: td[5].innerText.trim(), avail: +td[7].innerText.replace(":", ""),
+      cap: +td[8].innerText, waitlist: td[9].innerText.trim(),
+      lang: td[10].innerText.trim(), url: a.href,
+    });
+  }
+  console.log("courses found:", courses.length);
+  if (!courses.length) return console.warn("找不到課程，請確認你在 GE 結果頁");
+  function parseSections(html) {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const table = [...doc.querySelectorAll("table")].find(t => t.querySelector("th")?.textContent.trim() === "CRN");
+    if (!table) return null;
+    const out = [];
+    for (const tr of table.querySelectorAll("tr")) {
+      const td = [...tr.children].map(c => c.textContent.replace(/\u00a0/g, " ").trim());
+      if (td.length !== 16 || td[0] === "CRN") continue;
+      const m = td[11].match(/(\d\d):(\d\d)\s*-\s*(\d\d):(\d\d)/);
+      const slot = m && DAY[td[10]] ? { day: DAY[td[10]], start: +m[1]*60 + +m[2], end: +m[3]*60 + +m[4], bldg: td[12], room: td[13], dates: td[9] } : null;
+      if (td[0]) out.push({ crn: td[0], section: td[1], credit: +td[2], web: td[4], avail: +td[6].replace(":", ""), cap: +td[7], waitlist: td[8], instructor: td[14], lang: td[15], slots: slot ? [slot] : [] });
+      else if (slot && out.length) out[out.length - 1].slots.push(slot);
+    }
+    return out;
+  }
+  const result = [];
+  for (const c of courses) {
+    const res = await fetch(c.url, { credentials: "include" });
+    if (!res.ok) { console.warn("stop:", res.status, c.code); break; }
+    const sections = parseSections(await res.text());
+    if (!sections) { console.warn("no table:", c.code); break; }
+    result.push({ ...c, sections });
+    console.log(result.length + "/" + courses.length, c.code, sections.length);
+    await sleep(SLEEP_MS);
+  }
+  const blob = new Blob([JSON.stringify({ scrapedAt: new Date().toISOString(), term: "202702", courses: result })], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = "ge_courses.json"; a.click();
+})();
