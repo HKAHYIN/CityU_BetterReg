@@ -4,7 +4,7 @@ CityU BetterReg is a client-side timetable helper for finding Gateway Education 
 
 The application is built with Vue, Vite, and TypeScript. It does not provide course registration and does not send schedule data to a backend.
 
-This is experiment AI slop, u can use it for better visualization or maybe u can just scrap the data & send to generative ai to help u for reg科.
+This is experiment project, u can use it for better visualization or maybe u can just scrap the data & send to generative ai to help u for reg科.
 I’m still figuring out how to organise the messy data excluding the GE courses, into a clean and easy-to-understand format.
 
 Try it here:
@@ -17,11 +17,8 @@ Try it here:
 - Import a locally generated `ge_courses.json` file.
 - Search GE sections by timetable range, course code, title, section, or CRN.
 - Filter by component type and section group.
-- Match lecture and tutorial sections using the second section character.
 - Preview and select GE sections.
-- Detect timetable conflicts without automatically blocking selections.
-- Hide and restore entire GE courses.
-- Remove imported classes, busy periods, and selected GE sections.
+- Detect timetable conflicts
 - Persist manual busy periods in browser `localStorage`.
 
 ## Requirements
@@ -88,7 +85,7 @@ The GE import dialog also lets you choose a delay between AIMS requests in milli
 5. Paste the copied HTML into the schedule import dialog.
 6. Parse the schedule.
 
-The schedule parser reads the pasted HTML locally in the browser. It does not perform a network request.
+The schedule parser reads the pasted HTML locally in the browser.
 
 ## Data and privacy
 
